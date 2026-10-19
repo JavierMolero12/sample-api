@@ -1,12 +1,12 @@
 # syntax=docker/dockerfile:1
 
-# La imagen final es distroless python3-debian12, que trae Python 3.11:
-# el builder usa la misma versión mayor y la misma base Debian (bookworm)
+# La imagen final es distroless python3-debian13, que trae Python 3.13:
+# el builder usa la misma versión mayor y la misma base Debian (trixie)
 # para que las wheels compiladas (pydantic-core) sean compatibles.
-ARG PYTHON_VERSION=3.11
+ARG PYTHON_VERSION=3.13
 
 # ---------- Etapa 1: dependencias ----------
-FROM python:${PYTHON_VERSION}-slim-bookworm AS builder
+FROM python:${PYTHON_VERSION}-slim-trixie AS builder
 
 ENV PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
@@ -26,7 +26,7 @@ RUN python -m compileall -q /build/deps /build/app
 # ---------- Etapa 2: runtime ----------
 # distroless: sin shell, sin gestor de paquetes y con usuario nonroot (UID 65532).
 # Menos superficie de ataque y menos CVEs que reportará Trivy.
-FROM gcr.io/distroless/python3-debian12:nonroot AS runtime
+FROM gcr.io/distroless/python3-debian13:nonroot AS runtime
 
 ARG APP_VERSION=dev
 

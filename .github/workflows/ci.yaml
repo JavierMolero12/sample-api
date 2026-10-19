@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
-  PYTHON_VERSION: "3.11"
+  PYTHON_VERSION: "3.13"
   IMAGE_NAME: sample-api
   # Versión fijada de Trivy: un escáner sin fijar puede cambiar el resultado del pipeline
   # entre dos ejecuciones idénticas.
